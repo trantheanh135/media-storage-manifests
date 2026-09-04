@@ -42,10 +42,11 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       containers:
       - name: backend
-        # Change this to your actual image (build and push to registry first)
-        image: your-registry/media-storage-backend:latest
+        image: ghcr.io/trantheanh135/media-storage-backend:latest
         imagePullPolicy: Always
 
         ports:

@@ -125,10 +125,11 @@ spec:
       labels:
         app: frontend
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       containers:
       - name: frontend
-        # Change this to your actual image (build and push to registry first)
-        image: your-registry/media-storage-frontend:latest
+        image: ghcr.io/trantheanh135/media-storage-frontend:latest
         imagePullPolicy: Always
 
         ports:
