@@ -54,6 +54,8 @@ spec:
           name: http
 
         env:
+        - name: JAVA_OPTS_APPEND
+          value: "-Xms256m -Xmx1536m -XX:MaxMetaspaceSize=384m -XX:+UseSerialGC"
         - name: KC_DB
           value: "postgres"
         - name: KC_DB_URL
@@ -110,7 +112,7 @@ spec:
             memory: "1Gi"
             cpu: "500m"
           limits:
-            memory: "3Gi"
+            memory: "2Gi"
             cpu: "1000m"
 
       securityContext:
