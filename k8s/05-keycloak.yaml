@@ -55,7 +55,7 @@ spec:
 
         env:
         - name: JAVA_OPTS_APPEND
-          value: "-Xms256m -Xmx1536m -XX:MaxMetaspaceSize=384m -XX:+UseSerialGC"
+          value: "-Xms256m -Xmx1536m -XX:MaxMetaspaceSize=384m"
         - name: KC_DB
           value: "postgres"
         - name: KC_DB_URL
