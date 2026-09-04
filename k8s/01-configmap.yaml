@@ -30,7 +30,6 @@ data:
   SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak-service:8080/realms/media-storage/protocol/openid-connect/certs
 
   # Keycloak Client Config
-  KEYCLOAK_REALM: media-storage
   KEYCLOAK_SSL_REQUIRED: external
   KEYCLOAK_USE_RESOURCE_ROLE_MAPPINGS: "true"
   KEYCLOAK_CORS: "true"
