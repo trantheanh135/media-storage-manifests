@@ -1,0 +1,28 @@
+---
+# ArgoCD Application for Media Storage
+# Deploy this to the cluster with:
+# kubectl apply -f argocd-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: media-storage
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: media-storage-deploys
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: media-storage-deploys
+    notifications.argoproj.io/subscribe.on-synced.slack: media-storage-deploys
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/YOUR_USERNAME/media-storage-manifests
+    targetRevision: main
+    path: .
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: media-storage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

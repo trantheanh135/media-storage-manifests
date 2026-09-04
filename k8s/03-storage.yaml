@@ -1,0 +1,67 @@
+---
+# PostgreSQL PersistentVolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: media-storage
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/postgresql/data
+    type: DirectoryOrCreate
+
+---
+# PostgreSQL PersistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: media-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: postgres-pv
+
+---
+# Uploads PersistentVolume (for /home/uploads)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: uploads-pv
+  namespace: media-storage
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany  # Many pods can read/write
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-path
+  hostPath:
+    path: /home/uploads
+    type: DirectoryOrCreate
+
+---
+# Uploads PersistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uploads-pvc
+  namespace: media-storage
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: uploads-pv
