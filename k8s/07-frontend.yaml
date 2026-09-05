@@ -13,6 +13,10 @@ spec:
       targetPort: 80
       protocol: TCP
       name: http
+    - port: 443
+      targetPort: 443
+      protocol: TCP
+      name: https
   selector:
     app: frontend
   type: NodePort  # Change to LoadBalancer if available
@@ -99,6 +103,50 @@ data:
           add_header Cache-Control "public, immutable";
         }
       }
+
+      # HTTPS server: required so browsers accept Keycloak's AUTH_SESSION_ID
+      # cookie, which is always Secure+SameSite=None regardless of scheme
+      # (needed for cross-origin/iframe SSO support). Plain HTTP cannot log in.
+      server {
+        listen 443 ssl;
+        server_name _;
+        root /usr/share/nginx/html;
+        index index.html;
+
+        ssl_certificate /etc/nginx/certs/tls.crt;
+        ssl_certificate_key /etc/nginx/certs/tls.key;
+
+        location /api/ {
+          proxy_pass http://backend-service:8080;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $http_host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_cache_bypass $http_upgrade;
+        }
+
+        location /auth/ {
+          proxy_pass http://keycloak-service:8080;
+          proxy_http_version 1.1;
+          proxy_set_header Host $http_host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $http_host;
+        }
+
+        location / {
+          try_files $uri $uri/ /index.html;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+          expires 1y;
+          add_header Cache-Control "public, immutable";
+        }
+      }
     }
 
 ---
@@ -133,6 +181,8 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        - containerPort: 443
+          name: https
 
         livenessProbe:
           httpGet:
@@ -164,8 +214,14 @@ spec:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
+        - name: tls-certs
+          mountPath: /etc/nginx/certs
+          readOnly: true
 
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-config
+      - name: tls-certs
+        secret:
+          secretName: media-storage-tls
