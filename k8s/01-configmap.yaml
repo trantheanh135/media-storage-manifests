@@ -9,12 +9,6 @@ data:
   POSTGRES_PORT: "5432"
   POSTGRES_DB: media_storage_db
 
-  # Keycloak
-  KEYCLOAK_HOST: keycloak-service
-  KEYCLOAK_PORT: "8080"
-  KEYCLOAK_REALM: media-storage
-  KEYCLOAK_AUTH_SERVER_URL: http://keycloak-service:8080
-
   # Backend
   SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-service:5432/media_storage_db
   SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -24,15 +18,6 @@ data:
   APP_UPLOAD_DIR: /home/uploads/
   SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 500MB
   SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 500MB
-
-  # JWT/Keycloak OAuth2
-  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak-service:8080/realms/media-storage
-  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak-service:8080/realms/media-storage/protocol/openid-connect/certs
-
-  # Keycloak Client Config
-  KEYCLOAK_SSL_REQUIRED: external
-  KEYCLOAK_USE_RESOURCE_ROLE_MAPPINGS: "true"
-  KEYCLOAK_CORS: "true"
 
   # Logging
   LOGGING_LEVEL_ROOT: INFO

@@ -9,7 +9,6 @@ resources:
   - k8s/02-secret.yaml
   - k8s/03-storage.yaml
   - k8s/04-postgres.yaml
-  - k8s/05-keycloak.yaml
   - k8s/06-backend.yaml
   - k8s/07-frontend.yaml
   - k8s/08-ingress.yaml

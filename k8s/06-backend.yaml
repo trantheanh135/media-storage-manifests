@@ -43,7 +43,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: backend
-        image: ghcr.io/trantheanh135/media-storage-backend:29897b6183c3d1785d3cb803ff48978f7a356c2e
+        image: ghcr.io/trantheanh135/media-storage-backend:latest
         imagePullPolicy: Always
 
         ports:
@@ -55,6 +55,13 @@ spec:
             name: media-storage-config
         - secretRef:
             name: media-storage-secret
+
+        env:
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: jwt-secret
+              key: JWT_SECRET
 
         volumeMounts:
         - name: uploads
