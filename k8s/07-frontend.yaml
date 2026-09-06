@@ -116,7 +116,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: frontend
-        image: ghcr.io/trantheanh135/media-storage-frontend:dbefeeebcaf9a3ca955a3e89335387737408cd35
+        image: ghcr.io/trantheanh135/media-storage-frontend:d2b293087ac49911c961af09d1c125d6e819ac8d
         imagePullPolicy: Always
 
         ports:
