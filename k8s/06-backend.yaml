@@ -87,11 +87,11 @@ spec:
 
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"
+            memory: "768Mi"
             cpu: "500m"
+          limits:
+            memory: "1536Mi"
+            cpu: "1000m"
 
       volumes:
       - name: uploads
