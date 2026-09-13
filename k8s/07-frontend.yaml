@@ -77,9 +77,14 @@ data:
           proxy_cache_bypass $http_upgrade;
         }
 
-        # SPA routing - serve index.html for all routes
+        # SPA routing - serve index.html for all routes.
+        # Never let browsers cache the HTML shell (unlike the hashed JS/CSS
+        # assets below, its filename never changes between deploys, so a
+        # cached copy keeps pointing at old asset hashes after every
+        # release and the app never updates on a phone until a hard reload).
         location / {
           try_files $uri $uri/ /index.html;
+          add_header Cache-Control "no-cache";
         }
 
         # Cache static assets
@@ -116,7 +121,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: frontend
-        image: ghcr.io/trantheanh135/media-storage-frontend:latest
+        image: ghcr.io/trantheanh135/media-storage-frontend:12c0c0c45fea33c0f810767c9ddb0799a167b14c
         imagePullPolicy: Always
 
         ports:
