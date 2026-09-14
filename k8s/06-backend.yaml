@@ -43,7 +43,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: backend
-        image: ghcr.io/trantheanh135/media-storage-backend:12c0c0c45fea33c0f810767c9ddb0799a167b14c
+        image: ghcr.io/trantheanh135/media-storage-backend:bc72c1512bf9211edd4a6615476134d519d0b19e
         imagePullPolicy: Always
 
         ports:
