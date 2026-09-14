@@ -50,7 +50,7 @@ data:
       tcp_nodelay on;
       keepalive_timeout 65;
       types_hash_max_size 2048;
-      client_max_body_size 500M;
+      client_max_body_size 2G;
 
       gzip on;
       gzip_vary on;
@@ -116,6 +116,12 @@ spec:
     metadata:
       labels:
         app: frontend
+      annotations:
+        # Bumped manually to force a pod recreate when only the mounted
+        # nginx-config ConfigMap changes - kubelet syncs the file into the
+        # volume automatically, but nginx won't reload it without a restart,
+        # and a ConfigMap-only change doesn't otherwise change this spec.
+        restartedAt: "2026-09-14T07:10:00Z"
     spec:
       imagePullSecrets:
       - name: ghcr-secret
